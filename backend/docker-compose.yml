@@ -1,0 +1,36 @@
+version: '3'
+services:
+
+  klf_app:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.prod
+    container_name: klf_app
+    restart: unless-stopped
+    tty: true
+    networks:
+      - klf-backend
+
+  klf_db:
+    image: postgres:12-alpine
+    container_name: klf_db
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "5432:5432"
+    env_file:
+      - postgres.env
+    volumes:
+      - klf_db_data:/var/lib/postgresql/data
+    networks:
+      - klf-backend
+
+#Docker Networks
+networks:
+  klf-backend:
+    driver: bridge
+
+volumes:
+  klf_db_data:
+    driver: local
+    

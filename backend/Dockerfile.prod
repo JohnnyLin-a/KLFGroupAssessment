@@ -1,0 +1,42 @@
+# Create builder container
+FROM golang:alpine as builder
+
+# Set environment variables
+ENV GO111MODULE=on \
+    CGO_ENABLED=0 \
+    GOOS=linux \
+    GOARCH=amd64
+
+
+WORKDIR /app
+
+# Copy app to build
+COPY ./cmd/ ./cmd/
+COPY ./pkg/ ./pkg/
+
+# Download deps
+COPY go.mod ./go.sum ./
+RUN go mod download
+
+# build app
+RUN go build ./cmd/klfapisrv/main.go
+RUN go build ./cmd/dbsetup/dbsetup.go
+
+
+# Use liteweight container to run app
+FROM alpine:latest
+
+WORKDIR /root/
+
+# Copy compiled apps and config files.
+COPY --from=builder /app/main .
+COPY --from=builder /app/dbsetup .
+COPY ./klf_database/ ./klf_database/
+COPY ./.env ./
+
+
+# Execute main file
+ENTRYPOINT ["./main"]
+
+# Expose port 80
+EXPOSE 80

@@ -1,0 +1,55 @@
+version: '3'
+services:
+
+  klf_app:
+    image: golang:alpine
+    container_name: klf_app
+    restart: unless-stopped
+    tty: true
+    volumes:
+      - ./:/src
+    networks:
+      - klf-backend
+
+  klf_db:
+    image: postgres:12-alpine
+    container_name: klf_db
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "5432:5432"
+    env_file:
+      - postgres.env
+    volumes:
+      - klf_db_data:/var/lib/postgresql/data
+      - ./klf_database/:/klf_database/
+    networks:
+      - klf-backend
+
+
+  # To only use when need to debug database visually.
+  # pgadmin:
+  #   container_name: pgadmin
+  #   image: dpage/pgadmin4
+  #   environment:
+  #     PGADMIN_DEFAULT_EMAIL: SOME_EMAIL
+  #     PGADMIN_DEFAULT_PASSWORD: SOME_PASSWORD
+  #   volumes:
+  #       - pgadmin:/root/.pgadmin
+  #   ports:
+  #     - "5050:80"
+  #   networks:
+  #     - klf-backend
+  #   restart: unless-stopped
+
+#Docker Networks
+networks:
+  klf-backend:
+    driver: bridge
+
+    
+#Docker Volumes
+volumes:
+  klf_db_data:
+    driver: local
+    
