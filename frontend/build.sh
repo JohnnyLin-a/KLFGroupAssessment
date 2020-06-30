@@ -1,1 +1,1 @@
-docker build -t klffrontend:dev .
+docker build -t klf_frontend:dev .
