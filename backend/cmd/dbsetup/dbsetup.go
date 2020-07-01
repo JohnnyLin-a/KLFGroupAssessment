@@ -81,10 +81,10 @@ func main() {
 		INSERT INTO activities (name) VALUES ($1);
 	`, "View")
 
-	// user_activities
+	// Table user_activities
+	// Date format note: 2019-10-01 14:00:00
 	// David 15 logins
 	for i := 0; i < 14; i++ {
-		// date format: 2019-10-01T23:59:59Z
 		var datetime = time.Date(2019, time.October, i+1, 14, 0, 0, 0, time.UTC)
 		db.Exec(`
 			INSERT INTO user_activities (activity_id, user_id, occurrence) VALUES ($1,$2,$3);
@@ -101,7 +101,6 @@ func main() {
 
 	// John 5 logins
 	for i := 0; i < 4; i++ {
-		// date format: 2019-10-01T23:59:59Z
 		var datetime = time.Date(2019, time.October, i+1, 14, 0, 0, 0, time.UTC)
 		db.Exec(`
 			INSERT INTO user_activities (activity_id, user_id, occurrence) VALUES ($1,$2,$3);
@@ -116,7 +115,6 @@ func main() {
 		INSERT INTO user_activities (activity_id, user_id, occurrence) VALUES ($1,$2,$3);
 	`, 2, 1, time.Date(2019, time.October, 1, 15, 0, 0, 0, time.UTC))
 	for i := 0; i < 99; i++ {
-		// date format: 2019-10-01T23:59:59Z
 		db.Exec(`
 			INSERT INTO user_activities (activity_id, user_id, occurrence) VALUES ($1,$2,$3);
 		`, 2, 1, time.Date(2019, time.October, 31, 17, 0, 0, 0, time.UTC))
