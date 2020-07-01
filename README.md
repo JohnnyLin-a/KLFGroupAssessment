@@ -20,10 +20,12 @@ libraries golang:
 github.com/joho/godotenv access .env files in go app
 github.com/lib/pq add postgres dialect for go app
 golang.org/x/crypto add cryto library primarily for salt & hash passwords stored in database.
+github.com/gorilla/mux add HTTP router and URL matcher for go web app.
 
 
 libraries for react:
-react-redux latest stable
+react-redux 
+redux-persist 
 
 Core Notes:
 The frontend and backend normally should be in different repositories.

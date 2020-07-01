@@ -3,7 +3,10 @@ package main
 import (
 	"fmt"
 	"log"
+	"net/http"
 	"os"
+
+	"github.com/gorilla/mux"
 
 	"github.com/joho/godotenv"
 )
@@ -15,10 +18,13 @@ func main() {
 		os.Exit(1)
 	}
 
-	fmt.Println("POSTGRES_USER", os.Getenv("POSTGRES_USER"))
-	fmt.Println("POSTGRES_PASSWORD", os.Getenv("POSTGRES_PASSWORD"))
-	fmt.Println("POSTGRES_DB", os.Getenv("POSTGRES_DB"))
+	r := mux.NewRouter()
 
-	for true {
-	}
+	r.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprintf(w, "Test success!")
+	})
+
+	fmt.Println("Starting server at :8080")
+	http.ListenAndServe(":8080", r)
+
 }
