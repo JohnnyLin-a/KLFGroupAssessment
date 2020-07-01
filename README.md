@@ -17,13 +17,15 @@ node v12.x lts latest stable
 react latest stable
 
 libraries golang:
-joho/godotenv latest stable
+github.com/joho/godotenv access .env files in go app
+github.com/lib/pq add postgres dialect for go app
+golang.org/x/crypto add cryto library primarily for salt & hash passwords stored in database.
 
 
 libraries for react:
 react-redux latest stable
 
-Code Notes:
+Core Notes:
 The frontend and backend normally should be in different repositories.
 I will add both of them here for simplicity.
 This whole project combines all 3 parts of the assignment.
@@ -48,7 +50,7 @@ Frontend notes:
 Running instructions:
 *Make sure your ports 3000, 5432, 8080 are not being occupied locally.
 *Make sure your computer cpu architecture is amd64 (64-bit intel/amd). (With a little bit of change, this could work on other archs too)
-*My computer is Windows 10 using WSL for running docker, so this should work on linux as well.
+*My computer is Windows 10 using WSL2 for running docker, so this should work on linux as well.
 Navigate to the project root directory.
 Navigate inside the backend folder and execute the start.sh script.
 Execute the dbsetup.sh once the postgres docker is started.
