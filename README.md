@@ -48,6 +48,7 @@ Frontend notes:
 Running instructions:
 *Make sure your ports 3000, 5432, 8080 are not being occupied locally.
 *Make sure your computer cpu architecture is amd64 (64-bit intel/amd). (With a little bit of change, this could work on other archs too)
+*My computer is Windows 10 using WSL for running docker, so this should work on linux as well.
 Navigate to the project root directory.
 Navigate inside the backend folder and execute the start.sh script.
 Execute the dbsetup.sh once the postgres docker is started.
@@ -59,4 +60,15 @@ Then you can head to localhost:3000 for the company home page (Assignment 2).
 Logging in is on the same webpage (Assignment 1).
 
 Assignment 3 answer is here:
--
+
+	SELECT users.name AS user_name, activities.name AS activity_name, x.amount, x.first_occurrence, x.last_occurrence
+	FROM (
+	SELECT user_id, activity_id, COUNT(*) AS amount, MIN(occurrence) AS first_occurrence, MAX(occurrence) AS last_occurrence
+		FROM user_activities
+		WHERE occurrence BETWEEN '2019-10-01 00:00:00' AND '2019-10-31 23:59:59'
+		GROUP BY activity_id, user_id
+	) AS x
+	INNER JOIN users ON x.user_id = users.id
+	INNER JOIN activities ON x.activity_id = activities.id
+	ORDER BY activity_name
+
