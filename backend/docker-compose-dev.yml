@@ -52,4 +52,6 @@ networks:
 volumes:
   klf_db_data:
     driver: local
+  # pgadmin:
+  #   driver: local
     
