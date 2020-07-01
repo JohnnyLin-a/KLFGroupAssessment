@@ -37,6 +37,3 @@ COPY ./.env ./
 
 # Execute main file
 ENTRYPOINT ["./main"]
-
-# Expose port 80
-EXPOSE 80
