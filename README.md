@@ -24,8 +24,8 @@ github.com/gorilla/mux add HTTP router and URL matcher for go web app.
 
 
 libraries for react:
-react-redux 
-redux-persist 
+react-redux state management for react
+redux-persist add-on to persist state after reload for react-redux
 
 Core Notes:
 The frontend and backend normally should be in different repositories.
@@ -43,7 +43,7 @@ Which is why I will only be using raw SQL queries when performing transactions w
 Otherwise, I would be using a library called gorm for golang ORM.
 
 The default postgres user and database should not be used and should create a new user and database for the app.
-For simplicity's sake I will be using 
+For simplicity's sake I will be using the default ones.
 
 Frontend notes:
 -
