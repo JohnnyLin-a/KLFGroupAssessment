@@ -11,6 +11,7 @@ import (
 
 	"github.com/JohnnyLin-a/KLFGroupAssignment/backend/pkg/database"
 	"github.com/dgrijalva/jwt-go"
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"golang.org/x/crypto/bcrypt"
 
@@ -29,7 +30,7 @@ func main() {
 	jwtKey = []byte(os.Getenv("APP_SECRET"))
 
 	r := mux.NewRouter()
-
+	// Create routes
 	r.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("Test success!"))
 	}).Methods("GET")
@@ -38,8 +39,13 @@ func main() {
 
 	r.HandleFunc("/refresh", refresh).Methods("POST")
 
+	// Allow trusted origins
+	headersOk := handlers.AllowedHeaders([]string{"X-Requested-With"})
+	originsOk := handlers.AllowedOrigins([]string{os.Getenv("ORIGIN_ALLOWED")})
+	methodsOk := handlers.AllowedMethods([]string{"POST"})
+
 	fmt.Println("Starting server at :8080")
-	http.ListenAndServe(":8080", r)
+	http.ListenAndServe(":8080", handlers.CORS(originsOk, headersOk, methodsOk)(r))
 
 }
 
