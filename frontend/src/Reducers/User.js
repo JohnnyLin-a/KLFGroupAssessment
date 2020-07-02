@@ -1,6 +1,6 @@
 import {
     LOGIN
-} from '../actionTypes';
+} from '../ActionTypes';
 
 const initialState = {
 

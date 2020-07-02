@@ -24,8 +24,11 @@ github.com/gorilla/mux add HTTP router and URL matcher for go web app.
 
 
 libraries for react:
-react-redux state management for react
+react-redux state management for react 
 redux-persist add-on to persist state after reload for react-redux
+react-router-dom to route endpoints and to know what components to display
+react-fontawesome to include often used icons in web apps
+material-ui to include pretty ui materials
 
 Core Notes:
 The frontend and backend normally should be in different repositories.

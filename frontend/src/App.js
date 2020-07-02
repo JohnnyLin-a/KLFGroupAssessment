@@ -1,16 +1,29 @@
 import React from 'react';
-import logo from './logo.svg';
-import Header from './components/home_page/Header';
-import Body from './components/home_page/Body';
-import Footer from './components/home_page/Footer';
+
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import Header from './Components/Header';
+import Footer from './Components/Footer';
+import Login from './Components/Auth/Login';
+import Register from './Components/Auth/Register';
+import About from './Components/About/About';
+import Home from './Components/Home/Home';
 
 function App() {
   return (
-    <div>
-      <Header />
-      <Body />
-      <Footer />
-    </div>
+    <Router>
+      <div>
+        <Header />
+        <Switch>
+          <Route path="/" exact component={Home} />
+          <Route path="/login" component={Login} />
+          <Route path="/about" component={About} />
+          <Route path="/register" component={Register} />
+        </Switch>
+
+        <Footer />
+      </div>
+    </Router>
+
   );
 }
 

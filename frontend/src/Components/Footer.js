@@ -5,11 +5,8 @@ class Footer extends Component {
 
     render() {
         return (
-            <view>
-                <p>
-                    Footer
-                </p>
-            </view>
+            <div>
+            </div>
         )
     }
 }

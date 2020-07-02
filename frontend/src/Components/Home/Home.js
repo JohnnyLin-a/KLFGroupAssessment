@@ -1,17 +1,17 @@
 import React, { Component } from 'react'
 
-class Body extends Component {
+class Home extends Component {
 
 
     render() {
         return (
-            <view>
+            <div>
                 <p>
-                    Body
+                    Home
                 </p>
-            </view>
+            </div>
         )
     }
 }
 
-export default Body;
+export default Home;
