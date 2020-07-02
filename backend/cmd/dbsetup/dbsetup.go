@@ -40,7 +40,7 @@ func main() {
 	db.Exec(`
 	CREATE TABLE IF NOT EXISTS users (
 		id SERIAL PRIMARY KEY,
-		name TEXT,
+		name TEXT UNIQUE,
 		password VARCHAR(255)
 	);
 	`)
@@ -48,7 +48,7 @@ func main() {
 	db.Exec(`
 	CREATE TABLE IF NOT EXISTS activities (
 		id SERIAL PRIMARY KEY,
-		name TEXT
+		name TEXT UNIQUE
 	);
 	`)
 
