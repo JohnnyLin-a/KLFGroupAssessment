@@ -25,6 +25,10 @@ func main() {
 
 	// Drop tables if exists
 	db.Exec(`
+	DROP TABLE IF EXISTS user_activities;
+	`)
+
+	db.Exec(`
 	DROP TABLE IF EXISTS users;
 	`)
 
@@ -32,9 +36,7 @@ func main() {
 	DROP TABLE IF EXISTS activities;
 	`)
 
-	db.Exec(`
-	DROP TABLE IF EXISTS user_activities;
-	`)
+	fmt.Println("DROP")
 
 	// Create tables
 	db.Exec(`
@@ -61,6 +63,7 @@ func main() {
 		FOREIGN KEY(user_id) REFERENCES users(id)
 	);
 	`)
+	fmt.Println("CREATE")
 
 	// Insert mock data
 
@@ -119,6 +122,7 @@ func main() {
 			INSERT INTO user_activities (activity_id, user_id, occurrence) VALUES ($1,$2,$3);
 		`, 2, 1, time.Date(2019, time.October, 31, 17, 0, 0, 0, time.UTC))
 	}
+	fmt.Println("INSERT")
 
 	fmt.Println("DB: CREATED TABLES AND SEEDED.")
 	// fmt.Println("DB: Inserted the 15 rows")
