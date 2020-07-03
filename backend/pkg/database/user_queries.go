@@ -83,9 +83,39 @@ func UpdateUser(user *models.User) error {
 		log.Println("Error in UpdateUser: DB connection unsuccessful.")
 		return err
 	}
-	_, err = db.Exec(`UPDATE users SET name = $2, password = $3) WHERE id = $1`, user.ID, user.Name, user.Password)
+	_, err = db.Exec(`UPDATE users SET name = $2, password = $3 WHERE id = $1`, user.ID, user.Name, user.Password)
 	if err != nil {
 		log.Println("Error in UpdateUser: ", err)
+		return err
+	}
+	return nil
+}
+
+// UpdateUserName updates a user's name in the database
+func UpdateUserName(userID *int64, name *string) error {
+	var db, err = GetDatabase()
+	if db == nil {
+		log.Println("Error in UpdateUserName: DB connection unsuccessful.")
+		return err
+	}
+	_, err = db.Exec(`UPDATE users SET name = $2 WHERE id = $1`, *userID, *name)
+	if err != nil {
+		log.Println("Error in UpdateUserName: ", err)
+		return err
+	}
+	return nil
+}
+
+// UpdateUserPassword updates a user's password in the database
+func UpdateUserPassword(userID *int64, password *string) error {
+	var db, err = GetDatabase()
+	if db == nil {
+		log.Println("Error in UpdateUserPassword: DB connection unsuccessful.")
+		return err
+	}
+	_, err = db.Exec(`UPDATE users SET password = $2 WHERE id = $1`, *userID, *password)
+	if err != nil {
+		log.Println("Error in UpdateUserPassword: ", err)
 		return err
 	}
 	return nil
