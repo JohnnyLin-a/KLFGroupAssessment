@@ -4,6 +4,8 @@ import Nav from 'react-bootstrap/Nav'
 import Button from 'react-bootstrap/Button'
 import NavDropdown from 'react-bootstrap/NavDropdown'
 import { Link, withRouter } from 'react-router-dom'
+import { connect } from 'react-redux';
+import { logout } from '../Actions/AuthActions'
 class Header extends Component {
     state = {
         navExpanded: false
@@ -22,25 +24,22 @@ class Header extends Component {
     }
 
     render() {
-        const name = 'name_name';
-        const loggedIn = false;
-
         return (
             <Navbar bg="light" expand="lg" onToggle={this.setNavExpanded} expanded={this.state.navExpanded}>
                 <Navbar.Brand href="/">AccessLink</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="mr-auto">
-                        <Link to="/" className="text-dark" style={{ textDecoration: 'none' }}>Home</Link>
-                        <Link to="/about" className="ml-3 text-dark" style={{ textDecoration: 'none' }}>About</Link>
+                        <Link to="/" className="m-3 text-dark" style={{ textDecoration: 'none' }}>Home</Link>
+                        <Link to="/about" className="m-3 text-dark" style={{ textDecoration: 'none' }}>About</Link>
                     </Nav>
-                    {loggedIn ?
-                        <NavDropdown alignRight title={`Welcome, ${name}`} id="basic-nav-dropdown">
+                    {this.props.user.token ?
+                        <NavDropdown alignRight title={`Welcome, ${this.props.user.name}`} id="basic-nav-dropdown">
                             <NavDropdown.Item>
                                 <Link className="nav-link" to="/profile">Profile</Link>
                             </NavDropdown.Item>
                             <NavDropdown.Divider />
-                            <NavDropdown.Item onClick={() => { console.log("Logout!") }}>Logout</NavDropdown.Item>
+                            <NavDropdown.Item onClick={() => { this.props.dispatch(logout()) }}>Logout</NavDropdown.Item>
                         </NavDropdown>
                         :
                         <>
@@ -58,4 +57,9 @@ class Header extends Component {
     }
 }
 
-export default withRouter(Header);
+const mapStateToProps = state => {
+    return {
+        user: state.user
+    }
+}
+export default connect(mapStateToProps)(withRouter(Header));

@@ -7,11 +7,13 @@ import Login from './Components/Auth/Login';
 import Register from './Components/Auth/Register';
 import About from './Components/About/About';
 import Home from './Components/Home/Home';
+import RefreshJWTStrategy from './Strategies/RefreshJWTStrategy';
 
 function App() {
   return (
     <Router>
       <div>
+        <RefreshJWTStrategy />
         <Header />
         <Switch>
           <Route path="/" exact component={Home} />

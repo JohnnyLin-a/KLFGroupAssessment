@@ -31,7 +31,7 @@ class Register extends Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        console.log("Login with", this.state)
+        console.log("Register with", this.state)
     }
 
     render() {

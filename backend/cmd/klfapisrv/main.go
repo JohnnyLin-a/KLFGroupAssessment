@@ -57,7 +57,8 @@ type Credentials struct {
 
 // Claims is the struct for jwt claims
 type Claims struct {
-	ID int64 `json: "id"`
+	ID   int64  `json: "id"`
+	Name string `json: "name"`
 	jwt.StandardClaims
 }
 
@@ -100,7 +101,8 @@ func login(w http.ResponseWriter, r *http.Request) {
 	expirationTime := time.Now().Add(5 * time.Minute)
 
 	claims := &Claims{
-		ID: user.ID,
+		ID:   user.ID,
+		Name: user.Name,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: expirationTime.Unix(),
 		},

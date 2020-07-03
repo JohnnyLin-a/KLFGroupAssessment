@@ -5,10 +5,15 @@ import Container from 'react-bootstrap/Container'
 import { connect } from 'react-redux';
 import { loginSuccess } from '../../Actions/AuthActions'
 import { Redirect } from 'react-router-dom'
+import { parseJWT } from '../../Helpers/JWTHelper';
 class Login extends Component {
     constructor(props) {
         super(props);
-        this.state = { name: '', password: '' };
+        this.state = {
+            name: '',
+            password: '',
+            errorMessage: '',
+        };
 
         this.handleNameChange = this.handleNameChange.bind(this);
         this.handlePasswordChange = this.handlePasswordChange.bind(this);
@@ -25,39 +30,33 @@ class Login extends Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        console.log("Login with", this.state);
-
 
         fetch(`${process.env.REACT_APP_API_URL}/login`, {
             method: 'post',
             body: JSON.stringify({ name: this.state.name, password: this.state.password }),
         }).then(response => {
-            console.log("Login response code " + response.status, response)
             switch (response.status) {
                 case 200:
                     const jsonResponse = response.json();
-                    console.log("login success response body", jsonResponse);
                     return jsonResponse;
-                    break;
                 case 401:
-                    console.log("login unauthorized");
+                    this.setState({ errorMessage: "Wrong Name/Password" })
                     break;
                 case 500:
-                    console.log("login server error");
+                    this.setState({ errorMessage: "Internal server error" })
                     break;
                 case 400:
-                    console.log("login sent a bad request to api");
+                    this.setState({ errorMessage: "Invalid login details" })
                     break;
                 default:
-                    console.log("login received something completely off", response.status);
+                    this.setState({ errorMessage: "Network error. Please try again." })
                     break;
             }
         }).then(data => {
             if (typeof data !== 'undefined') {
-                console.log("data got", data);
-                this.props.loginSuccess(data);
-            } else {
-                console.log("data undefined", data);
+                const jsonObj = parseJWT(data.token);
+                console.log(jsonObj);
+                this.props.loginSuccess({ token: data.token, name: jsonObj.Name });
             }
         }).catch(error => {
             console.error(error);

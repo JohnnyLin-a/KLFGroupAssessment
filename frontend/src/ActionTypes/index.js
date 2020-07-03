@@ -1,1 +1,3 @@
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+export const REFRESH_JWT_SUCCESS = 'REFRESH_JWT_SUCCESS';
+export const LOGOUT = "LOGOUT";
