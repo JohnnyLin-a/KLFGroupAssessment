@@ -1,0 +1,14 @@
+{
+    "th": ["user_name", "activity_name", "amount", "first_occurrence", "last_occurrence"],
+    "td": [
+        [
+            "David", "Login", "15", "2019-10-01", "2019-10-31"
+        ],
+        [
+            "John", "Login", "5", "2019-10-01", "2019-10-15"
+        ],
+        [
+            "David", "View", "100", "2019-10-01", "2019-10-31"
+        ]
+    ]
+}
