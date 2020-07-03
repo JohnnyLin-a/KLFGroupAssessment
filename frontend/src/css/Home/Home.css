@@ -1,0 +1,34 @@
+.thumbnail {
+    position: relative;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+
+.caption {
+    position: absolute;
+    top: 41%;
+    left: 0;
+    width: 100%;
+    min-height: 300px;
+}
+
+.caption-text {
+    font-family: 'Press Start 2P', cursive;
+    text-shadow: 5px 5px 1px black;
+}
+
+.caption-title {
+    font-size: calc(12px + 2vw);
+}
+
+.caption-content {
+    font-size: calc(12px + 1vw);
+}
+
+.body-heading {
+    font-size: calc(12px + 1vw);
+}
+
+.body-content {
+    font-size: calc(12px + 0.5vw);
+}
