@@ -32,7 +32,8 @@ class RefreshJWTStrategy extends Component {
             console.log("componentDidUpdate true", prevProps.user, this.props.user);
             clearTimeout(this.timeout);
             this.startTimeout();
-        } else {
+        }
+        if (prevProps.user.token !== this.props.user.token && this.props.user.token === "") {
             console.log("componentDidUpdate false")
             clearTimeout(this.timeout);
         }
