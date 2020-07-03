@@ -65,21 +65,15 @@ func InsertUser(name *string, password *string) (*int64, error) {
 		return nil, err
 	}
 
-	var res sql.Result
-	res, err = db.Exec(`INSERT INTO users (name, password) VALUES ($1,$2)`, *name, *password)
+	_, err = db.Exec(`INSERT INTO users (name, password) VALUES ($1,$2)`, *name, *password)
 	if err != nil {
 		log.Println("Error in InsertUser: ", err)
 		return nil, err
 	}
 
-	var lastInsertID int64
-	lastInsertID, err = res.LastInsertId()
-	if err != nil {
-		log.Println("Error in InsertUser: ", err)
-		return nil, err
-	}
+	user := SelectUserByName(name)
 
-	return &lastInsertID, nil
+	return &user.ID, nil
 }
 
 // UpdateUser updates a user record in the database

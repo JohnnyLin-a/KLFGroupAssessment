@@ -39,6 +39,8 @@ func main() {
 
 	r.HandleFunc("/refresh", refresh).Methods("POST")
 
+	r.HandleFunc("/register", register).Methods("POST")
+
 	// Allow trusted origins
 	headersOk := handlers.AllowedHeaders([]string{"X-Requested-With"})
 	originsOk := handlers.AllowedOrigins([]string{os.Getenv("ORIGIN_ALLOWED")})
@@ -182,6 +184,59 @@ func refresh(w http.ResponseWriter, r *http.Request) {
 	}
 
 	log.Println("Refresh jwt success for user_id", claims.ID)
+	w.Header().Set("Content-Type", "application/json")
+	w.Write([]byte(`{"token":"` + tokenString + `"}`))
+}
+
+func register(w http.ResponseWriter, r *http.Request) {
+	// Get request body
+	body, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		log.Println("Error at Register, read body failed ", err)
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	// Get register details
+	var creds Credentials
+
+	err = json.Unmarshal(body, &creds)
+	if err != nil {
+		log.Println("Error at Register, unmarshal json failed for body ", body)
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	var userID *int64
+	userID, err = database.InsertUser(&creds.Name, &creds.Password)
+	if err != nil {
+		log.Println("Error at Register, user already exist: ", creds.Name)
+		w.WriteHeader(http.StatusUnauthorized)
+		return
+	}
+
+	// Create jwt token
+	expirationTime := time.Now().Add(5 * time.Minute)
+
+	claims := &Claims{
+		ID:   *userID,
+		Name: creds.Name,
+		StandardClaims: jwt.StandardClaims{
+			ExpiresAt: expirationTime.Unix(),
+		},
+	}
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+
+	tokenString, err := token.SignedString(jwtKey)
+	if err != nil {
+		log.Println("Error at register while creating jtw token string", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	log.Println("Register success ", creds.Name)
+	// Send token to user
+
 	w.Header().Set("Content-Type", "application/json")
 	w.Write([]byte(`{"token":"` + tokenString + `"}`))
 }
