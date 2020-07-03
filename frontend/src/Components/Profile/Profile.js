@@ -84,6 +84,9 @@ class Profile extends Component {
                     const jsonObj = parseJWT(data.token);
                     this.setState({ successMessageName: "Changed name!", submitDisabled: false, name: '' }, () => {
                         this.props.loginSuccess({ token: data.token, name: jsonObj.Name });
+                        setTimeout(() => {
+                            this.setState({ successMessageName: '' })
+                        }, 5000)
                     })
                 }
             }).catch(error => {
@@ -95,7 +98,7 @@ class Profile extends Component {
     handleSubmitChangePassword(event) {
         event.preventDefault();
 
-        this.setState({ submitDisabled: true, errorMessage: '' }, () => {
+        this.setState({ submitDisabled: true, errorMessagePassword: '' }, () => {
             if (this.state.password !== this.state.confirmPassword) {
                 this.setState({ errorMessagePassword: "Passwords do not match!", submitDisabled: false });
                 return
@@ -105,6 +108,38 @@ class Profile extends Component {
                 return
             }
 
+            fetch(`${process.env.REACT_APP_API_URL}/updatepassword`, {
+                method: 'post',
+                body: JSON.stringify({ password: this.state.password, token: this.props.user.token }),
+            }).then(response => {
+                switch (response.status) {
+                    case 200:
+                        const jsonResponse = response.json();
+                        return jsonResponse;
+                    case 401:
+                        this.setState({ errorMessagePassword: "Login expired, please refresh.", submitDisabled: false })
+                        break;
+                    case 500:
+                        this.setState({ errorMessagePassword: "Internal server error", submitDisabled: false })
+                        break;
+                    case 400:
+                        this.setState({ errorMessagePassword: "Invalid request (app error)", submitDisabled: false })
+                        break;
+                    default:
+                        this.setState({ errorMessagePassword: "Network error. Please try again.", submitDisabled: false })
+                        break;
+                }
+            }).then(data => {
+                if (typeof data !== 'undefined' && data.success === true) {
+                    this.setState({ successMessagePassword: "Changed password!", submitDisabled: false, password: '', confirmPassword: '' }, () => {
+                        setTimeout(() => {
+                            this.setState({ successMessagePassword: '' })
+                        }, 5000)
+                    })
+                }
+            }).catch(error => {
+                console.error(error);
+            });
 
         })
     }
@@ -145,12 +180,12 @@ class Profile extends Component {
                             <hr />
                             <Row className="m-3">
                                 <Col>
-                                    <Form.Group controlId="name">
+                                    <Form.Group controlId="password">
                                         <Form.Control type="password" placeholder="Password" value={this.state.password} onChange={this.handlePasswordChange} />
                                     </Form.Group>
                                 </Col>
                                 <Col>
-                                    <Form.Group controlId="name">
+                                    <Form.Group controlId="ConfirmPassword">
                                         <Form.Control type="password" placeholder="Confirm password" value={this.state.confirmPassword} onChange={this.handleConfirmPasswordChange} />
                                     </Form.Group>
                                 </Col>
