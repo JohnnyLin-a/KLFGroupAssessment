@@ -105,7 +105,7 @@ class Register extends Component {
 
                         <Button variant="primary" type="submit" disabled={this.state.submitDisabled}>
                             Register
-                    </Button>
+                        </Button>
                     </Form>
                 </Container>
 
