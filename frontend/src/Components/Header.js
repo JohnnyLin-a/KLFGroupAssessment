@@ -33,7 +33,7 @@ class Header extends Component {
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="mr-auto">
                             <Link to="/" className="m-3 text-dark" style={{ textDecoration: 'none' }}>Home</Link>
-                            <Link to="/about" className="m-3 text-dark" style={{ textDecoration: 'none' }}>About</Link>
+                            <Link to="/demo" className="m-3 text-dark" style={{ textDecoration: 'none' }}>Demo</Link>
                             <Link to="/contact-us" className="m-3 text-dark" style={{ textDecoration: 'none' }}>Contact us</Link>
                         </Nav>
                         {this.props.user.token ?
