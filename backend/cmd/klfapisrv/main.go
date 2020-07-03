@@ -211,8 +211,11 @@ func register(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	password, _ := bcrypt.GenerateFromPassword([]byte(creds.Password), bcrypt.DefaultCost)
+	passwordStr := string(password)
+	
 	var userID *int64
-	userID, err = database.InsertUser(&creds.Name, &creds.Password)
+	userID, err = database.InsertUser(&creds.Name, &passwordStr)
 	if err != nil {
 		log.Println("Error at Register, user already exist: ", creds.Name)
 		w.WriteHeader(http.StatusUnauthorized)
@@ -364,10 +367,12 @@ func updatePassword(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	password := jsonData["password"].(string)
+	password, _ := bcrypt.GenerateFromPassword([]byte(jsonData["password"].(string)), bcrypt.DefaultCost)
+	passwordStr := string(password)
+
 	userID := claims.ID
 
-	err = database.UpdateUserPassword(&userID, &password)
+	err = database.UpdateUserPassword(&userID, &passwordStr)
 	if err != nil {
 		log.Println("Error at updatePassword, database update failed")
 		w.WriteHeader(http.StatusInternalServerError)
