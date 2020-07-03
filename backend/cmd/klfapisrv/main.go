@@ -57,7 +57,7 @@ type Credentials struct {
 
 // Claims is the struct for jwt claims
 type Claims struct {
-	Name string `json:"name"`
+	ID int64 `json: "id"`
 	jwt.StandardClaims
 }
 
@@ -100,7 +100,7 @@ func login(w http.ResponseWriter, r *http.Request) {
 	expirationTime := time.Now().Add(5 * time.Minute)
 
 	claims := &Claims{
-		Name: creds.Name,
+		ID: user.ID,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: expirationTime.Unix(),
 		},
@@ -116,7 +116,9 @@ func login(w http.ResponseWriter, r *http.Request) {
 	}
 	log.Println("Login success ", user.Name)
 	// Send token to user
-	w.Write([]byte(tokenString))
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Write([]byte(`{"token":"` + tokenString + `"}`))
 
 }
 
@@ -177,6 +179,7 @@ func refresh(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	log.Println("Refresh jwt success for ", claims.Name)
-	w.Write([]byte(tokenString))
+	log.Println("Refresh jwt success for user_id", claims.ID)
+	w.Header().Set("Content-Type", "application/json")
+	w.Write([]byte(`{"token":"` + tokenString + `"}`))
 }

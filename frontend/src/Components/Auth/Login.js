@@ -35,8 +35,9 @@ class Login extends Component {
             console.log("Login response code " + response.status, response)
             switch (response.status) {
                 case 200:
-                    console.log("login success response body", response.body);
-                    this.props.loginSuccess({ token: response.body });
+                    const jsonResponse = response.json();
+                    console.log("login success response body", jsonResponse);
+                    return jsonResponse;
                     break;
                 case 401:
                     console.log("login unauthorized");
@@ -52,7 +53,12 @@ class Login extends Component {
                     break;
             }
         }).then(data => {
-            console.log(data);
+            if (typeof data !== 'undefined') {
+                console.log("data got", data);
+                this.props.loginSuccess(data);
+            } else {
+                console.log("data undefined", data);
+            }
         }).catch(error => {
             console.error(error);
         });
