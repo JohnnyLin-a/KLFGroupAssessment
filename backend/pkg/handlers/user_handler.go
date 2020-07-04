@@ -35,8 +35,9 @@ func UpdateName(w http.ResponseWriter, r *http.Request) {
 	// Parse token string
 	tknStr := jsonData["token"].(string)
 	claims := &Claims{}
+	jwtKey := jwthelper.GetJWTKey()
 	tkn, err := jwt.ParseWithClaims(tknStr, claims, func(token *jwt.Token) (interface{}, error) {
-		return jwthelper.GetJWTKey(), nil
+		return jwtKey, nil
 	})
 
 	// Check for errors when parsing
@@ -79,15 +80,14 @@ func UpdateName(w http.ResponseWriter, r *http.Request) {
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, newClaims)
 
-	tokenString, err := token.SignedString(jwthelper.GetJWTKey())
+	tokenString, err := token.SignedString(jwtKey)
 	if err != nil {
 		log.Println("Error at updateName while creating jtw token string", err)
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
-	log.Println("Update name success ", claims.ID)
-	// Send token to user
 
+	// Send token to user
 	w.Header().Set("Content-Type", "application/json")
 	w.Write([]byte(`{"token":"` + tokenString + `"}`))
 
@@ -115,7 +115,8 @@ func UpdatePassword(w http.ResponseWriter, r *http.Request) {
 	tknStr := jsonData["token"].(string)
 	claims := &Claims{}
 	tkn, err := jwt.ParseWithClaims(tknStr, claims, func(token *jwt.Token) (interface{}, error) {
-		return jwthelper.GetJWTKey(), nil
+		jwtKey := jwthelper.GetJWTKey()
+		return jwtKey, nil
 	})
 
 	// Check for errors when parsing

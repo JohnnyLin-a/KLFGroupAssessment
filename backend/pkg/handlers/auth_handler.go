@@ -75,16 +75,15 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-
-	tokenString, err := token.SignedString(jwthelper.GetJWTKey())
+	jwtKey := jwthelper.GetJWTKey()
+	tokenString, err := token.SignedString(jwtKey)
 	if err != nil {
-		log.Println("Error at login while creating jtw token string", err)
+		log.Println("Error at login while creating jwt token string", err)
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
-	log.Println("Login success ", user.Name)
-	// Send token to user
 
+	// Send token to user
 	w.Header().Set("Content-Type", "application/json")
 	w.Write([]byte(`{"token":"` + tokenString + `"}`))
 
@@ -111,8 +110,9 @@ func Refresh(w http.ResponseWriter, r *http.Request) {
 	// Parse token string, get new token
 	tknStr := jsonData["token"].(string)
 	claims := &Claims{}
+	jwtKey := jwthelper.GetJWTKey()
 	tkn, err := jwt.ParseWithClaims(tknStr, claims, func(token *jwt.Token) (interface{}, error) {
-		return jwthelper.GetJWTKey(), nil
+		return jwtKey, nil
 	})
 	// Check for errors when parsing
 	if err != nil {
@@ -141,9 +141,9 @@ func Refresh(w http.ResponseWriter, r *http.Request) {
 	expirationTime := time.Now().Add(5 * time.Minute)
 	claims.ExpiresAt = expirationTime.Unix()
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	tokenString, err := token.SignedString(jwthelper.GetJWTKey())
+	tokenString, err := token.SignedString(jwtKey)
 	if err != nil {
-		log.Println("Error at refresh, while creating jtw token string ", err)
+		log.Println("Error at refresh, while creating jwt token string ", err)
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
@@ -196,8 +196,8 @@ func Register(w http.ResponseWriter, r *http.Request) {
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-
-	tokenString, err := token.SignedString(jwthelper.GetJWTKey())
+	jwtKey := jwthelper.GetJWTKey()
+	tokenString, err := token.SignedString(jwtKey)
 	if err != nil {
 		log.Println("Error at register while creating jtw token string", err)
 		w.WriteHeader(http.StatusInternalServerError)
