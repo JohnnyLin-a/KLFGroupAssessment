@@ -25,7 +25,7 @@ class ContactUs extends Component {
     }
 
     handleMessageChange = event => {
-        this.setState({ password: event.target.value });
+        this.setState({ message: event.target.value });
     }
 
     handleSubmit = event => {
