@@ -55,10 +55,10 @@ Frontend notes:
 Running instructions:
 *Make sure your ports 3000, 5432, 8080 are not being occupied locally.
 *Make sure your computer cpu architecture is amd64 (64-bit intel/amd). (With a little bit of change, this could work on other archs too)
-*My computer is Windows 10 using WSL2 for running docker, so this should work on linux as well.
+*My computer is Windows 10 using WSL2 for running docker, so this should work on linux as well. (Update: should work on Linux too (Ubuntu 20.04 at least))
 Navigate to the project root directory.
 Navigate inside the backend folder and execute the start.sh script.
-Execute the dbsetup.sh once the postgres docker is started.
+Execute the ./scripts/setup_db.sh once the klf_db and klf_app dockers have started.
 Navigate back to the project root directory, then navigate inside the frontend directory.
 Execute the build.sh script once only, then execute the start.sh script.
 
