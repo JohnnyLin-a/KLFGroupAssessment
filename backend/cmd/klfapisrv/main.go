@@ -45,6 +45,8 @@ func main() {
 
 	r.HandleFunc("/updatepassword", updatePassword).Methods("POST")
 
+	r.HandleFunc("/demo", demo).Methods("GET")
+
 	// Allow trusted origins
 	headersOk := handlers.AllowedHeaders([]string{"X-Requested-With"})
 	originsOk := handlers.AllowedOrigins([]string{os.Getenv("ORIGIN_ALLOWED")})
@@ -213,7 +215,7 @@ func register(w http.ResponseWriter, r *http.Request) {
 
 	password, _ := bcrypt.GenerateFromPassword([]byte(creds.Password), bcrypt.DefaultCost)
 	passwordStr := string(password)
-	
+
 	var userID *int64
 	userID, err = database.InsertUser(&creds.Name, &passwordStr)
 	if err != nil {
@@ -381,4 +383,24 @@ func updatePassword(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	w.Write([]byte(`{"success":true}`))
+}
+
+func demo(w http.ResponseWriter, r *http.Request) {
+	report, err := database.GetOctober2019Report()
+	if err != nil {
+		log.Println("Error at demo: Couldn't get October 2019 data ", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	var jsonStr []byte
+	jsonStr, err = json.Marshal(report)
+	if err != nil {
+		log.Println("Error at demo: Json Marshal failed ", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(jsonStr)
 }
