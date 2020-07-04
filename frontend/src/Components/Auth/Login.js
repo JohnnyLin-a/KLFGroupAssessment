@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { loginSuccess } from '../../Actions/AuthActions'
 import { Redirect } from 'react-router-dom'
 import { parseJWT } from '../../Helpers/JWTHelper';
+import Alert from 'react-bootstrap/Alert';
 class Login extends Component {
     constructor(props) {
         super(props);
@@ -30,37 +31,38 @@ class Login extends Component {
 
     handleSubmit(event) {
         event.preventDefault();
-
-        fetch(`${process.env.REACT_APP_API_URL}/login`, {
-            method: 'post',
-            body: JSON.stringify({ name: this.state.name, password: this.state.password }),
-        }).then(response => {
-            switch (response.status) {
-                case 200:
-                    const jsonResponse = response.json();
-                    return jsonResponse;
-                case 401:
-                    this.setState({ errorMessage: "Wrong Name/Password" })
-                    break;
-                case 500:
-                    this.setState({ errorMessage: "Internal server error" })
-                    break;
-                case 400:
-                    this.setState({ errorMessage: "Invalid login details" })
-                    break;
-                default:
-                    this.setState({ errorMessage: "Network error. Please try again." })
-                    break;
-            }
-        }).then(data => {
-            if (typeof data !== 'undefined') {
-                const jsonObj = parseJWT(data.token);
-                console.log(jsonObj);
-                this.props.loginSuccess({ token: data.token, name: jsonObj.Name });
-            }
-        }).catch(error => {
-            console.error(error);
-        });
+        this.setState({ errorMessage: '' }, () => {
+            fetch(`${process.env.REACT_APP_API_URL}/login`, {
+                method: 'post',
+                body: JSON.stringify({ name: this.state.name, password: this.state.password }),
+            }).then(response => {
+                switch (response.status) {
+                    case 200:
+                        const jsonResponse = response.json();
+                        return jsonResponse;
+                    case 401:
+                        this.setState({ errorMessage: "Wrong Name/Password" })
+                        break;
+                    case 500:
+                        this.setState({ errorMessage: "Internal server error" })
+                        break;
+                    case 400:
+                        this.setState({ errorMessage: "Invalid login details" })
+                        break;
+                    default:
+                        this.setState({ errorMessage: "Network error. Please try again." })
+                        break;
+                }
+            }).then(data => {
+                if (typeof data !== 'undefined') {
+                    const jsonObj = parseJWT(data.token);
+                    console.log(jsonObj);
+                    this.props.loginSuccess({ token: data.token, name: jsonObj.Name });
+                }
+            }).catch(error => {
+                console.error(error);
+            });
+        })
     }
 
     render() {
@@ -80,6 +82,9 @@ class Login extends Component {
                             <Form.Label>Password</Form.Label>
                             <Form.Control type="password" placeholder="Password" value={this.state.password} onChange={this.handlePasswordChange} />
                         </Form.Group>
+                        {this.state.errorMessage && <Alert variant="danger">
+                            {this.state.errorMessage}
+                        </Alert>}
                         <Button variant="primary" type="submit">
                             Login
                         </Button>
