@@ -32,9 +32,7 @@ class Demo extends Component {
             }
         }).then(data => {
             if (typeof data !== 'undefined') {
-                this.setState({ tableData: data }, () => {
-                    console.log("data", data)
-                })
+                this.setState({ tableData: data })
             }
         }).catch(error => {
             console.error(error);
@@ -60,16 +58,16 @@ class Demo extends Component {
                         <Table responsive>
                             <thead>
                                 <tr>
-                                    {this.state.tableData.th.map(th =>
-                                        <th>{th}</th>
+                                    {this.state.tableData.th.map((th, index) =>
+                                        <th key={index}>{th}</th>
                                     )}
                                 </tr>
                             </thead>
                             <tbody>
-                                {this.state.tableData.td.map(row =>
-                                    <tr>
-                                        {row.map(cellData =>
-                                            <td>{cellData}</td>
+                                {this.state.tableData.td.map((row, rowIndex) =>
+                                    <tr key={`row${rowIndex}`}>
+                                        {row.map((cellData, cellIndex) =>
+                                            <td key={`row${rowIndex}cell${cellIndex}`}>{cellData}</td>
                                         )}
                                     </tr>
                                 )}
