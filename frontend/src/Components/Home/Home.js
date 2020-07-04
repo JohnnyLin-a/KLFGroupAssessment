@@ -27,7 +27,7 @@ class Home extends Component {
                                 <h5 className="pb-5 text-center body-content">
                                     AccessLink™ keeps track of your users' activities in your app to quickly track their most frequent actions.
                                 </h5>
-                                <h5 className="text-center body-content">
+                                <h5 className="pb-5 text-center body-content">
                                     Check out the demo <Link to="/demo">here</Link>!
                                 </h5>
                             </Container>
