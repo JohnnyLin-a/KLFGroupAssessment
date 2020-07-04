@@ -1,0 +1,15 @@
+version: '3'
+services:
+  
+
+  klf_frontend:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    container_name: klf_frontend
+    restart: unless-stopped
+    tty: true
+    volumes:
+      - ./:/app
+    ports:
+      - "3000:3000"
