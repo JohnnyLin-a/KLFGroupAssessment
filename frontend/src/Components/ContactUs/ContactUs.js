@@ -49,7 +49,7 @@ class ContactUs extends Component {
 
                         <Form.Group controlId="message">
                             <Form.Label>Your message</Form.Label>
-                            <Form.Control type="text" value={this.state.message} onChange={this.handleMessageChange} />
+                            <Form.Control as="textarea" row="3" value={this.state.message} onChange={this.handleMessageChange} />
                         </Form.Group>
 
                         {this.state.successMessage && <Alert variant="success">
