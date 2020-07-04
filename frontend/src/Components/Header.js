@@ -37,7 +37,7 @@ class Header extends Component {
                             <Link to="/contact-us" className="m-3 text-dark" style={{ textDecoration: 'none' }}>Contact us</Link>
                         </Nav>
                         {this.props.user.token ?
-                            <NavDropdown alignRight title={`Welcome, ${this.props.user.name}`} id="basic-nav-dropdown">
+                            <NavDropdown title={`Welcome, ${this.props.user.name}`} id="basic-nav-dropdown">
                                 <NavDropdown.Item>
                                     <Link className="nav-link" to="/profile">Profile</Link>
                                 </NavDropdown.Item>
