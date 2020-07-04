@@ -1,9 +1,7 @@
-# KLFGroupAssignment
-
-To re-style this file later.
+# KLFGroup Assessment
 
 languages and tools used: 
-Core:
+Core (Required on host machine):
 docker latest stable
 docker-compose (installed manually only if using linux) latest stable
 
@@ -21,14 +19,16 @@ github.com/joho/godotenv access .env files in go app
 github.com/lib/pq add postgres dialect for go app
 golang.org/x/crypto add cryto library primarily for salt & hash passwords stored in database.
 github.com/gorilla/mux add HTTP router and URL matcher for go web app.
+github.com/gorilla/handlers add HTTP middleware for the router
+github.com/dgrijalva/jwt-go add JWT authentication 
 
 
 libraries for react:
 react-redux state management for react 
 redux-persist add-on to persist state after reload for react-redux
 react-router-dom to route endpoints and to know what components to display
-react-fontawesome to include often used icons in web apps
-material-ui to include pretty ui materials
+react-fontawesome to include often used icons in web apps (I don't think I used this actually)
+react-bootstrap to add styling to website
 
 Core Notes:
 The frontend and backend normally should be in different repositories.
@@ -43,16 +43,16 @@ Feel free to change any of the values in the *.env files.
 Backend notes:
 I will not be using an ORM because I feel that will not show my SQL knowledge.
 Which is why I will only be using raw SQL queries when performing transactions with the database.
-Otherwise, I would be using a library called gorm for golang ORM.
+(Otherwise, I would be using a library called gorm for golang ORM.)
 
 The default postgres user and database should not be used and should create a new user and database for the app.
 For simplicity's sake I will be using the default ones.
 
 Frontend notes:
--
+I believe there is some lack of comments for the frontend, but it's mostly self explanatory what's happening there.
 
 
-Running instructions:
+# Running instructions:
 *Make sure your ports 3000, 5432, 8080 are not being occupied locally.
 *Make sure your computer cpu architecture is amd64 (64-bit intel/amd). (With a little bit of change, this could work on other archs too)
 *My computer is Windows 10 using WSL2 for running docker, so this should work on linux as well. (Update: should work on Linux too (Ubuntu 20.04 at least))
