@@ -33,7 +33,7 @@ react-bootstrap to add styling to website
 Core Notes:
 The frontend and backend normally should be in different repositories.
 I will add both of them here for simplicity.
-This whole project combines all 3 parts of the assignment.
+This whole project combines all 3 parts of the assessment.
 
 Normally *.env files are excluded and *.env.template files are provided with a list of used variable names.
 For simplicity's sake, I will add the .env so that it can be executed quickly without much set up.
@@ -63,10 +63,10 @@ Navigate back to the project root directory, then navigate inside the frontend d
 Execute the build.sh script once only, then execute the start.sh script.
 
 Answers:
-Then you can head to localhost:3000 for the company home page (Assignment 2).
-Logging in is on the same webpage (Assignment 1).
+Then you can head to localhost:3000 for the company home page (Assessment 2).
+Logging in is on the same webpage (Assessment 1).
 
-Assignment 3 answer is here:
+Assessment 3 answer is here:
 
 	SELECT users.name AS user_name, activities.name AS activity_name, x.amount, x.first_occurrence, x.last_occurrence
 	FROM (
