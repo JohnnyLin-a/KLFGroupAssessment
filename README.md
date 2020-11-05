@@ -1,4 +1,4 @@
-# KLFGroup Assessment
+# ReactGoPGSQL Assessment
 
 languages and tools used: 
 Core (Required on host machine):
